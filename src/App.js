@@ -11,19 +11,21 @@ import Table from './Table';
 class App extends Component {
 
   state = {
-    data:[]
+    data:[],
+    activeName: null
   }
   componentWillMount(){
     json("https://udemy-react-d3.firebaseio.com/children.json")
     .then(data   => this.setState({data}))
     .catch(error => console.log(error));
   }
-
+  updateName = (activeName) => this.setState( {activeName} )
+  updateData = (data) => this.setState( {data} )
   renderChart(){
     if(this.state.data.length === 0){
       return "No data"
     }
-    return <ChartWrapper data = {this.state.data} />
+    return <ChartWrapper data = {this.state.data} updateName={this.updateName} />
   }
   render() {
     return (
@@ -34,7 +36,7 @@ class App extends Component {
         <Container>
           <Row>
             <Col md={6} xs={12}>{ this.renderChart() }</Col>
-            <Col md={6} xs={12}><Table data={this.state.data}/></Col>
+            <Col md={6} xs={12}><Table data={ this.state.data} updateData={this.updateData} activeName={this.state.activeName}/></Col>
           </Row>
         </Container>
       </div>
